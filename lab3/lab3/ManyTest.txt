@@ -1,0 +1,94 @@
+#include <iostream>
+#include "Many.hpp"
+
+int Map(int elem);
+bool Where(int elem);
+int Reduce(int val1, int val2);
+
+void ManyTest()
+{
+  Many<int> many = Many<int>();
+  cout << "Set many, elems: {1, 2, 3, 4, 5, 9, 10}" << endl;
+  int arr[] = {1, 2, 3, 4, 5, 9, 10};
+  for (int i = 0; i < 7; many.AddElem(arr[i]), i++);
+  many.Print();
+
+  cout << "Find 5, 11:" << endl;
+  cout << "Status of 5: " << many.Find(5) << endl << "Status of 11: " << many.Find(11) << endl;
+
+  cout << "Delete 10: " << endl;
+  many.Delete(10);
+  many.Print();
+
+  cout << "Map(many): " << endl;
+  many.Map(Map);
+  many.Print();
+
+  cout << "Where(many): " << endl;
+  many.Where(Where);
+  many.Print();
+
+  cout << "Reduce(many): " << endl;
+  many.Reduce(Reduce, 0);
+  many.Print();
+
+  cout << "Unif {10, 20, 30, 40, 50} with {1, 2, 3, 4, 5}" << endl;
+  int arr1[5] = {1, 2, 3, 4, 5};
+  Many<int>* many1 = new Many<int>();
+  for (int i = 0; i < 3; many1->AddElem(arr1[i]), i++);
+  many.Association(many1);
+  cout  << "Res: " << endl;
+  many.Print();
+
+  cout << "{1, 2, 3, 4, 5, 10, 20, 30, 40, 50} minus {2, 3}" << endl;
+  Many<int>* many2 = new Many<int>();
+  int arr2[2] = {2, 3};
+  for (int i = 0; i < 2; many2->AddElem(arr2[i]), i++);
+  many.Minus(many2);
+  many.Print();
+
+  cout << "{1, 4, 5, 10, 20, 30, 40, 50} Intersection {1, 10, 20, 50}" << endl;
+  Many<int>* many3 = new Many<int>();
+  int arr2[4] = {1, 10, 20, 50};
+  for (int i = 0; i < 4; many3->AddElem(arr2[i]), i++);
+  many.Intersection(many3);
+  many.Print();
+}
+
+int Map(int elem)
+{
+  return 10 * elem;
+}
+
+bool Where(int elem)
+{
+  if (elem > 60) return false;
+  return true;
+}
+
+int Reduce(int val1, int val2)
+{
+  return val1 + val2;
+}
+/*	
+	cout << "Is {3, 200} equals to {1, 3, 200} ?" << endl;
+	int arr4[3] = { 1, 3, 200 };
+	int size4 = 3;
+	Set<int>* set4 = new Set<int>();
+	set4->Insert(arr4, size4);
+	int answer = set->Equals(set4);
+	if (answer == 0) cout << "Result: No" << endl;
+	cout << endl;
+
+	cout << "Is {3, 200} a subsequence of {3, 200, 300}?" << endl;
+	int arr5[3] = {3, 200, 300};
+	int size5 = 3;
+	Set<int>* set5 = new Set<int>();
+	set5->Insert(arr5, size5);
+	set5 = set5->Intersection(set);
+	set5->Print();
+	int answer1 = set->Equals(set5);
+	if (answer1 == 1) cout << "Result: Yes" << endl;
+	cout << endl;
+}
+*/

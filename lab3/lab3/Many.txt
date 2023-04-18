@@ -1,0 +1,97 @@
+#pragma once
+#include <iostream>
+#include "BinaryTree.hpp"
+
+using namespace std;
+
+template <class T>
+class Many{
+private:
+	BinaryTree<T>* data;
+public:
+
+	Many() {
+		data = new BinaryTree<T>();
+	}
+
+	void AddElem(T elem)
+	{
+		data->AddElem(elem);
+	}
+
+	bool Find(T elem)
+	{
+		return data->ElemExist(elem);
+	}
+
+	void Delete(T elem)
+	{
+		data->DeleteElem(elem);
+	}
+
+	void Map(T (*func)(T data))
+	{
+		data->Map(func);
+	}
+
+	void Where(bool (*func)(T data))
+	{
+		data->Where(func);
+	}
+
+	T Reduce(T (*func)(T val1, T val2), T constant)
+	{
+		return data->Reduce(func, constant);
+	}
+
+	void Association(Many<T>* many)
+	{
+		T* array = many->data->ToArray();
+		for (int i = 0; i < many->data->GetSize(); AddElem(array[i]), i++);
+	}
+
+	Many<T>* Intersection(Many<T>* many)
+	{
+		T* arr1 = data->ToArray();
+		T* arr2 = many->data->ToArray();
+		Many<T>* res = new Set<T>();
+		for (int i = 0; i < data->GetSize(); i++)
+		{
+			for (int j = 0; j < many->data->GetSize(); j++)
+			{
+				if (arr1[i] == arr2[j]) res->AddElem(arr1[i]);
+			}
+		}
+		return res;
+	}
+
+	void Minus(Many<T>* many)
+	{
+		T* array = many->data->ToArray();
+		for (int i = 0; i < many->data->GetSize(); Delete(array[i]), i++);
+	}
+
+	bool Equals(Many<T>* many)
+	{
+		T* arr1 = data->ToArray();
+		T* arr2 = many->data->ToArray();
+		for (int i = 0; i < data->GetSize(); i++)
+		{
+			for (int j = 0; j < many->data->GetSize(); j++)
+			{
+				if (arr1[i] != arr2[j]) return false;
+			}
+		}
+		return true;
+	}
+
+	void Print() {
+		data->Print();
+	}
+
+/*
+	string ToString() {
+		return data->ToString();
+	}
+*/
+};
